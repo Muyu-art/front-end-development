@@ -1,8 +1,21 @@
-# 2021---软件综合实习---基于微服务的Online Judge平台---前端开发
+# onlinejudge
 
+> A Vue.js project
 
-导入项目到IDEA
-terminal输入
-  npm install  安装环境依赖
-  npm run dev  项目启动
-  
+## Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+```
+
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
