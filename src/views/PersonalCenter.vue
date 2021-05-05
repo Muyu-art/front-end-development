@@ -2,42 +2,34 @@
   <div>
   <el-container class="personal-container" style="width:80%">
     <el-container class="header">
-      <div style="font-size: 32px">{{this.UserInfo[this.id].username}}</div>
+      <div style="font-size: 32px">{{this.UserInfo.username}}</div>
       <el-divider></el-divider>
     </el-container>
     <el-container class="container1" style="width:100%">
-      <table :data="UserInfo" stripe border style="width: 25%;line-height: 12px">
+      <table :data="UserInfo" stripe border style="width: 30%;line-height: 12px">
         <tbody>
           <tr>
             <th>用户名</th>
             <td>
-              <div style="color: #337ab7">{{this.UserInfo[this.id].username}}</div>
+              <div style="color: #337ab7">{{this.UserInfo.username}}</div>
             </td>
           </tr>
           <tr>
-            <th>昵称</th>
-            <td><div style="color: #337ab7">{{this.UserInfo[this.id].nickname}}</div></td>
-          </tr>
-          <tr>
             <th>邮箱</th>
-            <td><div style="color: #337ab7">{{this.UserInfo[this.id].email}}</div></td>
-          </tr>
-          <tr>
-            <th>QQ号</th>
-            <td><div style="color: #337ab7">{{this.UserInfo[this.id].QQnumber}}</div></td>
+            <td><div style="color: #337ab7">{{this.UserInfo.email}}</div></td>
           </tr>
           <tr>
             <th>学校</th>
-            <td><div style="color: #337ab7">{{this.UserInfo[this.id].school}}</div></td>
+            <td><div style="color: #337ab7">{{this.UserInfo.university}}</div></td>
           </tr>
           <tr>
             <th>专业</th>
-            <td><div style="color: #337ab7">{{this.UserInfo[this.id].major}}</div></td>
+            <td><div style="color: #337ab7">{{this.UserInfo.major}}</div></td>
           </tr>
         </tbody>
       </table>
 
-      <el-container class="recent-submit"  style="margin-left:30px;margin-top:0px;width:75%;height: 243px">
+      <el-container class="recent-submit"  style="margin-left:30px;margin-top:0px;width:70%;height: 243px">
         <p style="line-height: 0">我的提交</p>
         <el-container class="recent-submit"  style="overflow-y:auto">
         <table :data="PersonalSubmit" stripe border style="overflow-y:auto;width: 100%;line-height: 10px">
@@ -46,7 +38,7 @@
 
              <td>
                 <div style="color: #337ab7">{{i.questionid+"."+i.questiontitle}}</div>
-               <div style="color: #337ab7;float: right" >{{i.status+i.time}}</div>
+               <div style="color: #337ab7;float: right" >{{i.testresult+i.submittime}}</div>
              </td>
 
           </tr>
@@ -105,87 +97,61 @@
 </template>
 
 <script>
-import Login from "./Login"
+
 export default {
   name: "PersonalCenter",
   data() {
     return {
       UserInfo:[{
-        username: 'CatWithFish',
-        nickname: 'CatWithFish',
-        email:'123@qq.com',
-        QQnumber: '123123123',
-        school: '加州旅馆',
-        major: 'CS',
-
-      },{
-        username: 'Cat',
-        nickname: 'Cat',
-        email:'cat@qq.com',
-        QQnumber: '123123123',
-        school: '中国地质大学（武汉）',
-        major: 'CS',
+        username:"",
+        password:"",
+        email:"",
+        university:"",
+        studedntnumber:"",
+        major:""
       }],
       PersonalSubmit:[{
-        questionid: '1',
-        questiontitle:'奶牛问题',
-        status:'通过',
-        time:'3天前',
-      },{
-        questionid: '1',
-        questiontitle:'奶牛问题',
-        status:'未通过',
-        time:'3天前',
-      },{
-        questionid: '1',
-        questiontitle:'奶牛问题',
-        status:'未通过',
-        time:'3天前',
-      },{
-        questionid: '1',
-        questiontitle:'奶牛问题',
-        status:'未通过',
-        time:'3天前',
-      },{
-        questionid: '1',
-        questiontitle:'奶牛问题',
-        status:'未通过',
-        time:'3天前',
-      },{
-        questionid: '1',
-        questiontitle:'奶牛问题',
-        status:'未通过',
-        time:'3天前',
-      },{
-        questionid: '1',
-        questiontitle:'奶牛问题',
-        status:'未通过',
-        time:'3天前',
-      },{
-        questionid: '1',
-        questiontitle:'奶牛问题',
-        status:'未通过',
-        time:'3天前',
+        questionid:"",
+        questiontitle:"",
+        testresult:"",
+        submittime:"",
       }]
 
     }
   },
   methods:{
-    getData: function(){
-      this.author=this.$route.query.id;
-      let flag = false;
-      for(let i=0;i<this.UserInfo.length;i++){
-        if(this.author===this.UserInfo[i].username){
-          this.id=i;
-          flag=true;
-        }
-      }
-
+    getUserData: function(){
+      let username=JSON.parse(window.localStorage.getItem('user' || '[]')).username;
+      //alert(username)
+      this.$axios
+        .post('/userinfo',{
+          username:username
+        })
+        .then(successResponse => {
+          this.UserInfo=successResponse.data
+          //alert(successResponse.data.password)
+        })
+        .catch(failResponse => {
+        })
     },
-
+    getSubmitData: function(){
+      let username=JSON.parse(window.localStorage.getItem('user' || '[]')).username;
+      //alert(username)
+      this.$axios
+        .post('/submitinfo',{
+          username:username
+        })
+        .then(successResponse => {
+          this.PersonalSubmit=successResponse.data
+          //alert(successResponse.data[0].state)
+        })
+        .catch(failResponse => {
+        })
+    }
   },
   created() {
-    this.getData();
+    this.getUserData();
+    this.getSubmitData();
   },
 }
 </script>

@@ -10,9 +10,16 @@ import PersonalCenter from "../views/PersonalCenter";
 import QuestionBank from "../views/QuestionBank";
 import Status from "../views/Status";
 import question from "../views/Question/question";
-import compiledetails from"../views/Question/CompileDetails"
+import compiledetails from"../views/Question/CompileDetails";
+import usersetting from"../views/UserSetting"
 
 Vue.use(Router);
+
+const VueRouterPush=Router.prototype.push;
+Router.prototype.push=function push(to){
+  return VueRouterPush.call(this,to).catch(err=>err)
+};
+
 
 export default new Router({
   mode:"history",
@@ -31,7 +38,10 @@ export default new Router({
       name:'Login',
       component:Login
     },
-
+    {
+      path:'/logout',
+      name:'Logout',
+    },
     {
       path:'/index',
       name:'Index',
@@ -81,6 +91,11 @@ export default new Router({
         requireAuth: true //表示该路由需要登录验证后才能进入  在切换路径跳转路由之前作判断
       },
       component:compiledetails
+    },
+    {
+      path:'/personalcenter/usersetting',
+      name:'UserSetting',
+      component:usersetting
     },
 
   ]

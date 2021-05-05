@@ -24,8 +24,8 @@ export default {
   data () {
     return {
       loginForm: {
-        username: 'admin',
-        password: '123456'
+        username: '',
+        password: ''
       },
       responseResult: []
     }
@@ -45,6 +45,7 @@ export default {
             _this.$store.commit('login', _this.loginForm)
             var path = this.$route.query.redirect
             this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
+            location.reload();
             alert("登陆成功！");
           }
           else{

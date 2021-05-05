@@ -8,41 +8,43 @@
         <div style="overflow-y:auto;width:100%;height:470px">
             <tr>
               <td >
-              <h1 style="font-size: 20px;color: #333333">{{ this.QuestionInfo[this.id-1].questionid+".  "+this.QuestionInfo[this.id-1].questiontitle}}</h1>
+              <h1 style="font-size: 20px;color: #333333">{{ this.QuestionInfo.questionid+".  "+this.QuestionInfo.questiontitle}}</h1>
               </td>
               <td>
-              <el-tag type="success" effect="plain">通过次数：{{this.QuestionInfo[this.id-1].solvetimes}}</el-tag>
+              <el-tag type="success" effect="plain">通过次数：{{this.QuestionInfo.solvetimes}}</el-tag>
               </td>
             </tr>
           <el-divider></el-divider>
-          <div class="line1" style="line-height: 1.2">时间限制：{{ this.QuestionInfo[this.id-1].timelimit}}</div>
-          <div class="line1" style="line-height: 1.2">内存限制：{{ this.QuestionInfo[this.id-1].memorylimit}}</div>
+          <div class="line1" style="line-height: 1.2">时间限制：{{ this.QuestionInfo.timelimit}}ms</div>
+          <div class="line1" style="line-height: 1.2">内存限制：{{ this.QuestionInfo.memorylimit}}MB</div>
           <el-divider></el-divider>
-          <div class="line1" style="line-height: 1.4;color: #333333">{{ this.QuestionInfo[this.id-1].questiondescription}}
+          <div class="line1" style="line-height: 1.4;color: #333333">{{ this.QuestionInfo.questiondescription}}
             </div>
 
           <el-divider></el-divider>
+
           <div class="line1" style="line-height: 1.4;color: #333333;font-size:18px">示例1:</div>
-          <div class="line1" style="line-height: 1.4;color: #333333">输入：nums = [1,1,2]</div>
-          <div class="line1" style="line-height: 1.4;color: #333333">输出：2, nums = [1,2]</div>
-          <div class="line1" style="line-height: 1.4;color: #333333">解释：函数应该返回新的长度 2 ，并且原数组 nums 的前两个元素被修改为 1, 2 。不需要考虑数组中超出新长度后面的元素。</div>
+          <div class="line1" style="line-height: 1.4;color: #333333">{{ this.QuestionInfo.sample1}}</div>
 
 
           <el-divider></el-divider>
 
           <div class="line1" style="line-height: 1.4;color: #333333;font-size:18px">示例2:</div>
-          <div class="line1" style="line-height: 1.4;color: #333333">输入：nums = [0,0,1,1,1,2,2,3,3,4]</div>
-          <div class="line1" style="line-height: 1.4;color: #333333">输出：5, nums = [0,1,2,3,4]</div>
-          <div class="line1" style="line-height: 1.4;color: #333333">函数应该返回新的长度5，并且原数组 nums 的前五个元素被修改为 0,1,2,3,4。不需要考虑数组中超出新长度后面的元素。</div>
+          <div class="line1" style="line-height: 1.4;color: #333333">{{ this.QuestionInfo.sample2}}</div>
 
+          <el-divider></el-divider>
+          <div class="line1" style="line-height: 1.4;color: #333333;font-size:18px">提示:</div>
 
+          <div class="line1" style="line-height: 1.4;color: #333333">{{ this.QuestionInfo.tips}}</div>
 
         </div>
       </el-container>
       <el-container class="EditArea" style="height: 100%;width:50%">
 <!--        <h1>编辑区</h1>-->
-        <CodeEdit></CodeEdit>
-<!--        <el-divider></el-divider>-->
+<!--        <CodeEdit></CodeEdit>-->
+        <CodeEdit v-on:postcode="getcode" v-on:postlanguage="getlanguage" v-on:postdata="postcode"></CodeEdit>
+
+        <!--        <el-divider></el-divider>-->
 
       </el-container>
     </el-container>
@@ -59,49 +61,92 @@ export default {
   data(){
     return{
       QuestionInfo:[{
-        questionid: '1',
-        questiontitle: '最长子序列',
-        questiondescription: '给你一个有序数组 nums ，请你 原地 删除重复出现的元素，使每个元素只出现一次，返回删除后数组的新长度。\n' +
-          '            不要使用额外的数组空间，你必须在原地修改输入数组并在使用O(1)额外空间的条件下完成。说明:什么返回数值是整数，但输出的答案是数组呢?',
-        indescription: '234234',
-        outdescription: '435543',
-        inexample: '213',
-        outexample: '123',
-        timelimit:'123',
-        memorylimit:'256MB',
-        submittimes:'120s',
-        solvetimes:'6',
-      },
-        {
-          questionid: '2',
-          questiontitle: '奶牛问题',
-          questiondescription: '我是一头牛，一头大傻牛！！！',
-          indescription: '234234',
-          outdescription: '435543',
-          inexample: '213',
-          outexample: '123',
-          timelimit:'123',
-          memorylimit:'256MB',
-          submittimes:'120s',
-          solvetimes:'23',
-        }],
+        questionid:'',
+        questiontitle: '',
+        questiondescription:'',
+        sample1:'',
+        sample2:'',
+        timelimit:'',
+        memorylimit:'',
+        submittimes:'',
+        solvetimes:'',
+        tips:''
+      },],
       id:'',
+      code:'',
+      language:''
+
     }
 
   },
   methods:{
-    postData(){
-      alert("success!");
-      alert(CodeEdit.data.code);
-      alert(CodeEdit.data.mode);
-    },
     getData: function(){
       this.id=this.$route.query.id;
     },
+    getcode(e){
+      this.code=e;
+      //alert(this.code);
+    },
+    getlanguage(e){
+      this.language=e;
+      //alert(this.language)
+    },
+
+    loadQuestion:function() {
+      var _this = this
+      console.log(this.$store.state)
+      this.$axios
+        .post('/question',{
+          questionid:this.id
+        })
+        .then(successResponse => {
+          _this.QuestionInfo=successResponse.data
+        })
+        .catch(failResponse => {
+        })
+    },
+    postcode(){
+      var languageid=3;
+      if(this.language==='C')
+      {
+        languageid=1;
+      }else if(this.language==='C++')
+      {
+        languageid=2;
+      }else if(this.language==='Java')
+      {
+        languageid=3;
+      }else if(this.language==='Python')
+      {
+        languageid=4;
+      }
+      let username=JSON.parse(window.localStorage.getItem('user' || '[]')).username;
+      //alert(username)
+      //alert(this.QuestionInfo.questionid)
+      //alert(languageid)
+      //alert(this.code)
+      this.$axios
+        .post('/code', {
+          username:username,
+          questionid: this.QuestionInfo.questionid,
+          languageid: languageid,
+          code:this.code
+        })
+        .then(successResponse => {
+          if (successResponse.data.status === "Error") {
+            alert("提交失败！");
+          }else{
+            alert("提交成功")
+          }
+          //alert(successResponse.data.status)
+        })
+    }
   },
   created() {
     this.getData();
   },
+  mounted()
+  {this.loadQuestion()}
 }
 </script>
 

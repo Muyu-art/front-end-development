@@ -37,7 +37,7 @@
       <el-container class="container2" style="width:220px" >
 
             <div style="margin-top: 0px;">
-              <el-input placeholder="请输入题号"  class="input-with-select" v-model="input">
+              <el-input placeholder="请输入题目"  class="input-with-select" v-model="input">
                 <el-button slot="append" icon="el-icon-search" size="small" @click="search"></el-button>
               </el-input>
             </div>
@@ -107,31 +107,11 @@ export default {
   data() {
     return {
       QuestionInfo:[{
-        questionid: '1',
-        questiontitle: '最长子序列',
-        questiondescription: '123123123',
-        indescription: '234234',
-        outdescription: '435543',
-        inexample: '213',
-        outexample: '123',
-        timelimit:'123',
-        memorylimit:'256MB',
-        submittimes:'120s',
-        solvetimes:'6',
+        questionId:'',
+        questionTitle: '',
+        solveTimes:''
       },
-        {
-          questionid: '2',
-          questiontitle: '奶牛问题',
-          questiondescription: '123123123',
-          indescription: '234234',
-          outdescription: '435543',
-          inexample: '213',
-          outexample: '123',
-          timelimit:'123',
-          memorylimit:'256MB',
-          submittimes:'120s',
-          solvetimes:'6',
-        }],
+        ],
       currentDate: new Date(),
       path:'',
       currentPage: 1,
@@ -141,9 +121,17 @@ export default {
   },
   methods:{
     search(){
-      var index=this.input;
-
-
+    },
+    loadQuestion:function() {
+      var _this = this
+      console.log(this.$store.state)
+      this.$axios
+        .post('/questionlist')
+        .then(successResponse => {
+          _this.QuestionInfo=successResponse.data
+        })
+        .catch(failResponse => {
+        })
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
@@ -157,7 +145,10 @@ export default {
     edit(id) {
       this.$router.push({ path: '/question', query: { id: id } })
     },
+
   },
+  mounted()
+  {this.loadQuestion()},
   watch: {
 
     $route(to, from) {

@@ -10,12 +10,7 @@
                  :key="mode.value" :label="mode.label" :value="mode.value">
       </el-option>
     </el-select>
-    <tr><td style="padding-right: 10px">
-    <el-button type="primary"  size="small" style="background:#006179;width:100px" @click="runCode">执行代码</el-button>
-    </td><td>
-    <el-button type="primary"  size="small" style="background:#006179;width:100px" @click="postData">提交</el-button>
-    </td>
-    </tr>
+    <el-button type="primary"  size="small" style="background:#006179;width:100px" v-on:click="postData">提交</el-button>
   </div>
 </template>
 
@@ -120,13 +115,14 @@ export default {
     this._initialize()
   },
   methods: {
-    // 初始化
     postData(){
-
+      this.$emit("postcode",this.code);
+      let obj={};
+      obj=this.modes.find((item)=>item.value===this.mode);
+      this.$emit("postlanguage",obj.label);
+      this.$emit("postdata","post");
     },
-    runCode(){
 
-    },
     _initialize () {
       // 初始化编辑器实例，传入需要被实例化的文本域对象和默认配置
       this.coder = CodeMirror.fromTextArea(this.$refs.textarea, this.options)

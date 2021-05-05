@@ -46,7 +46,7 @@
 
       </el-container>
       <el-container class="status" style="width:100%">
-        <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" stripe border style="width: 100%;line-height: 15px" >
+        <el-table :data="StatusInfo.slice((currentPage-1)*pageSize,currentPage*pageSize)" stripe border style="width: 100%;line-height: 15px" >
           <el-table-column prop="runid" label="运行ID" width="110px" style="color:#337ab7" align="center">
             <template slot-scope="scope">
               <router-link :to="{path: '/compiledetails',query:{id:scope.row.runid}}"style="color: #337ab7" @select="edit1(scope.row.runid)">
@@ -55,15 +55,15 @@
 
             </template>
           </el-table-column>
-          <el-table-column prop="author" label="作者" width="180px" align="center">
+          <el-table-column prop="username" label="作者" width="180px" align="center">
             <template slot-scope="scope">
-              <router-link :to="{path: '/personalcenter',query:{id:scope.row.author}}"style="color: #337ab7" @select="edit(scope.row.questionid)">
-                {{ scope.row.author}}
+              <router-link :to="{path: '/personalcenter',query:{id:scope.row.username}}"style="color: #337ab7" @select="edit(scope.row.questionid)">
+                {{ scope.row.username}}
               </router-link>
 
             </template>
           </el-table-column>
-          <el-table-column prop="questionid" label="题号" width="300px" align="center">
+          <el-table-column prop="questionid" label="题号" width="295px" align="center">
             <template slot-scope="scope">
               <router-link :to="{path: '/question',query:{id:scope.row.questionid}}"style="color: #337ab7" @select="edit(scope.row.questionid)">
                 {{ scope.row.questionid}}-{{ scope.row.questiontitle}}
@@ -71,7 +71,7 @@
 
             </template>
           </el-table-column>
-          <el-table-column prop="testresult" label="测评结果" width="130px" align="center">
+          <el-table-column prop="testresult" label="测评结果" width="110px" align="center">
             <template slot-scope="scope" >
               <div class="result" :style="activation(scope.row.testresult)" style="font-family:'微软雅黑';font-weight: 700">{{ scope.row.testresult}}</div>
             </template>
@@ -97,7 +97,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="submittime" label="提交时间" width="150px"align="center">
+          <el-table-column prop="submittime" label="提交时间" width="170px"align="center">
             <template slot-scope="scope">
               <div style="color: #337ab7">{{ scope.row.submittime}}</div>
             </template>
@@ -105,7 +105,7 @@
         </el-table>
         <div>
           <el-pagination layout=" prev, pager, next" background :current-page="currentPage" :page-size="pageSize"
-                         :total="tableData.length"  @current-change="handleCurrentChange">
+                         :total="StatusInfo.length"  @current-change="handleCurrentChange">
           </el-pagination>
         </div>
 
@@ -122,183 +122,19 @@ export default {
   name: "Status",
   data() {
     return {
-      tableData:[{
-        runid:'001',
-        author:'CatWithFish',
-        questionid:'1',
-        questiontitle:'最长子序列',
-        testresult:'通过',
-        score:'100',
-        time:'2MS',
-        memory:'260KB',
-        language:'C++',
-        submittime:'3天前'
+      StatusInfo:[{
+        runid:'',
+        author:'',
+        questionid:'',
+        questiontitle:'',
+        testresult:'',
+        score:'',
+        time:'',
+        memory:'',
+        language:'',
+        submittime:''
       },
-        {
-          runid:'002',
-          author:'Cat',
-          questionid:'1',
-          questiontitle:'最长子序列',
-          testresult:'等待测评',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C',
-          codelength:'107',
-          submittime:'3天前'
-        },
-        {
-          runid:'003',
-          author:'WithFish',
-          questionid:'2',
-          questiontitle:'奶牛问题',
-          testresult:'等待重测',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          submittime:'3天前'
-        },
-        {
-          runid:'004',
-          author:'Fish',
-          questionid:'2',
-          questiontitle:'奶牛问题',
-          testresult:'正在编译',
-          score:'100',
-          time:'2000MS',
-          memory:'10MB',
-          language:'Java',
-          submittime:'1天前'
-        },
-        {
-          runid:'005',
-          author:'CatWithFish',
-          questionid:'1',
-          questiontitle:'最长子序列',
-          testresult:'正在测评',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          codelength:'107',
-          submittime:'3天前'
-        },
-        {
-          runid:'006',
-          author:'CatWithFish',
-          questionid:'1',
-          questiontitle:'最长子序列',
-          testresult:'输出格式错误',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          codelength:'107',
-          submittime:'3天前'
-        },{
-          runid:'007',
-          author:'CatWithFish',
-          questionid:'1',
-          questiontitle:'最长子序列',
-          testresult:'解答错误',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          codelength:'107',
-          submittime:'3天前'
-        },
-        {
-          runid:'008',
-          author:'CatWithFish',
-          questionid:'1',
-          questiontitle:'最长子序列',
-          testresult:'运行超时',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          codelength:'107',
-          submittime:'3天前'
-        },
-        {
-          runid:'009',
-          author:'CatWithFish',
-          questionid:'1',
-          questiontitle:'最长子序列',
-          testresult:'内存超限',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          codelength:'107',
-          submittime:'3天前'
-        },
-        {
-          runid:'010',
-          author:'CatWithFish',
-          questionid:'1',
-          questiontitle:'最长子序列',
-          testresult:'输出超限',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          codelength:'107',
-          submittime:'3天前'
-        },
-        {
-          runid:'011',
-          author:'CatWithFish',
-          questionid:'1',
-          questiontitle:'最长子序列',
-          testresult:'运行出错',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          codelength:'107',
-          submittime:'3天前'
-        },
-        {
-          runid:'012',
-          author:'CatWithFish',
-          questionid:'1',
-          questiontitle:'最长子序列',
-          testresult:'编译错误',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          codelength:'107',
-          submittime:'3天前'
-        },
-        {
-          runid:'013',
-          author:'CatWithFish',
-          questionid:'1',questiontitle:'最长子序列',
-          testresult:'系统错误',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          codelength:'107',
-          submittime:'3天前'
-        },
-        {
-          runid:'014',
-          author:'CatWithFish',
-          questionid:'1',
-          questiontitle:'最长子序列',
-          testresult:'无测评数据',
-          score:'100',
-          time:'2MS',
-          memory:'260KB',
-          language:'C++',
-          codelength:'107',
-          submittime:'3天前'
-        },
+
       ],
       currentPage: 1,
       pageSize: 30,
@@ -364,7 +200,8 @@ export default {
         value: 'python',
         label: 'Python3'
       },],
-      value: ''
+      value: '',
+      id:'',
     }
   },
   methods:{
@@ -378,6 +215,17 @@ export default {
     edit1(id) {
       this.$router.push({ path: '/compiledetails', query: { id: id } })
     },
+    loadStatus:function() {
+      var _this = this
+      console.log(this.$store.state)
+      this.$axios
+        .post('/status')
+        .then(successResponse => {
+          _this.StatusInfo=successResponse.data
+        })
+        .catch(failResponse => {
+        })
+    }
   },
   watch: {
 
@@ -388,23 +236,23 @@ export default {
       }
     },
   },
+  mounted()
+  {this.loadStatus()},
   computed: {
     activation() {
       return (icontent) => { // 使用JavaScript闭包，进行传值操作
         console.log(icontent)
 
-        if (icontent === "输出格式错误"||icontent === "解答错误"||icontent === "运行出错"||icontent === "编译错误"||icontent === "系统错误"||icontent === "无测评数据"){
+        if (icontent === "Error"||icontent === "Presentation Error"||icontent === "Wrong Answer"||icontent === "Runtime Error"||icontent === "Compile Error"||icontent === "System Error"||icontent === "无测评数据"){
           return {'color':'#c53939'}
         }
-        else if (icontent === "通过"){
+        else if (icontent === "Accepted"){
           return {'color':'#317b33'}
         }
-        else if (icontent === "正在编译"||icontent === "正在测评"||icontent === "运行超时"||icontent === "内存超限"||icontent === "输出超限"){
+        else if (icontent === "Time Limit Exceeded"||icontent === "Memory Limit Exceeded"||icontent === "Output Limit Exceeded"){
           return {'color':'#925c0b'}
         }
-        else if (icontent === "等待测评"||icontent === "等待重测"){
-          return {'color':'#777777'}
-        }
+
 
       }
     }

@@ -82,22 +82,6 @@ export default {
         compile: 'javac -J-Xms32m -J-Xmx256m Main.java',
       }],
       tableData2: [{
-        result: 'Pending',
-        chinese: '等待测评',
-        information:'系统忙，你的答案在排队等待',
-      }, {
-        result: 'Pending Rejudge',
-        chinese: '等待重测',
-        information:'因为数据更新或其他原因，系统将重新判你的答案',
-      }, {
-        result: 'Compiling',
-        chinese: '正在编译',
-        information:'正在编译',
-      },{
-        result: 'Running & Judging',
-        chinese: '正在测评',
-        information:'正在运行和判断',
-      },{
         result: 'Accepted',
         chinese: '通过',
         information:'程序通过',
@@ -129,6 +113,10 @@ export default {
         result: 'Compile Error',
         chinese: '编译错误',
         information:'编译错误，请点击后获得编译器的详细输出',
+      },{
+        result: 'System Error',
+        chinese: '系统错误',
+        information:'系统出现错误',
       },]
     };
   }
