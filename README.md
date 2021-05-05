@@ -1,4 +1,4 @@
-# onlinejudge  前端开发
+# onlinejudge
 
 > A Vue.js project
 
